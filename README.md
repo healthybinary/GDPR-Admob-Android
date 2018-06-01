@@ -14,7 +14,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 > Step 2. Add the dependency
 ```gradle
     dependencies {
-	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.3'
+	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.2'
 	}
 ```
 ---
@@ -24,19 +24,33 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 [Source](https://support.google.com/admob/answer/2784578?hl=en)
 
 > To get the device id you have to initialize an adrequest
+
+**Java**
 ```java
     // Creating a dummy adview
     AdView adView = new AdView(context);
     adView.setAdSize(AdSize.BANNER);
     adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111"); // Default test banner id
-    adView.loadAd((new com.google.android.gms.ads.AdRequest.Builder()).build());
+    adView.loadAd((new AdRequest.Builder()).build());
     
     // Or using this code is the same code above it uses the test banner id provided by admob. 'ca-app-pub-3940256099942544/6300978111'
     ConsentSDK.initDummyBanner(context);
 ```
+**Kotlin**
+```kotlin
+    // Creating a dummy adview
+    val adView = AdView(this)
+    adView.adSize = AdSize.BANNER
+    adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+    adView.loadAd(AdRequest.Builder().build())
+    
+    // Or using this code is the same code above it uses the test banner id provided by admob. 'ca-app-pub-3940256099942544/6300978111'
+    ConsentSDK.initDummyBanner(this)
+```
 ---
 # How to use library:
 `1.a Initializing using Builder class`
+**Java**
 ```java
     ConsentSDK consentSDK = new ConsentSDK.Builder(this)
                 .addTestDeviceId("your device id from logcat") // Add your test device id "Remove addTestDeviceId on production!"
@@ -45,16 +59,34 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
                 .addPublisherId("pub-0123456789012345") // Add your admob publisher id
                 .build();
 ```
+**Kotlin**
+```kotlin
+    val consentSDK = ConsentSDK.Builder(this)
+                .addTestDeviceId("your device id from logcat") // Add your test device id "Remove addTestDeviceId on production!"
+                .addCustomLogTag("CUSTOM_TAG") // Add custom tag default: ID_LOG
+                .addPrivacyPolicy("https://your.privacy.url/") // Add your privacy policy url
+                .addPublisherId("pub-0123456789012345") // Add your admob publisher id
+                .build()
+```
 `1.b Initializing without Builder class`
+**Java**
 ```java
     String deviceId = "your device id from logcat";
     String publisherId = "pub-0123456789012345";
     String privacyUrl = "https://your.privacy.url/";
     ConsentSDK consentSDK = new ConsentSDK(this, publisherId, privacyUrl, true);
 ```
+**Kotlin**
+```kotlin
+    val deviceId = "your device id from logcat"
+    val publisherId = "pub-0123456789012345"
+    val privacyUrl = "https://your.privacy.url/"
+    val consentSDK = ConsentSDK(this, publisherId, privacyUrl, true)
+```
 > Choose one of the methods to initialize the ConsentSDK from above.
 
 `2. Then check the consent using:`
+**Java**
 ```java
     consentSDK.checkConsent(new ConsentSDK.ConsentSDKCallback() {
             @Override
@@ -62,6 +94,14 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
                 // Your code
             }
         });
+```
+**Kotlin**
+```kotlin
+    consentSDK.checkConsent(object : ConsentSDK.ConsentSDKCallback() {
+            override fun onResult() {
+                // Your code
+            }
+        })
 ```
 > How checkConsent works:
 ```
@@ -72,18 +112,33 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 ```
 
 `3. You should load the ads (banner or interstitial ..) using the function below:`
+**Java**
 ```java
     // To Load the banner
     adView.loadAd(ConsentSDK.getAdRequest(this));
     // To Load Interstitial
     interstitialAd.loadAd(ConsentSDK.getAdRequest(this));
 ```
+**Kotlin**
+```kotlin
+    // To Load the banner
+    adView.loadAd(ConsentSDK.getAdRequest(this))
+    // To Load Interstitial
+    interstitialAd.loadAd(ConsentSDK.getAdRequest(this))
+```
 `4. To Check if the user is within EEA or not.`
+**Java**
 ```java
     // But you must call consent.checkConsent(callback) before to update the status
     consentSDK.isUserLocationWithinEea(); // Returns true if within false if not.
 ```
+**Kotlin**
+```kotlin
+    // But you must call consent.checkConsent(callback) before to update the status
+    consentSDK.isUserLocationWithinEea // Returns true if within false if not.
+```
 `5. To request the consent form to re-edit it for the users within EEA.`
+**Java**
 ```java
     // To request the consent form to re-edit it for the users within EEA
     consentSDK.requestConsent(new ConsentSDK.ConsentSDKCallback() {
@@ -93,10 +148,19 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
             }
         });
 ```
+**Kotlin**
+```kotlin
+    // To request the consent form to re-edit it for the users within EEA
+    consentSDK.requestConsent(object : ConsentSDK.ConsentSDKCallback() {
+            override fun onResult() {
+                // Your code after the consent is submitted if needed
+            }
+        })
+```
 ---
 # Note:
-> This library is just an editing of the official [Google Consent SDK Android](https://github.com/googleads/googleads-consent-sdk-android) with some tweaks and with some helper class to simplify the comply of the app to GDPR policy.
+> ~ This library is just an editing of the official [Google Consent SDK Android](https://github.com/googleads/googleads-consent-sdk-android) with some tweaks and with some helper class to simplify the comply of the app to GDPR policy.
 
-> That's it, if you followed the steps above your app will be comply with the **GDPR** policy.
+> ~ That's it, if you followed the steps above your app will be comply with the **GDPR** policy.
 
 Made by Ayoub Fletcher with LOVE :heart:.

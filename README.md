@@ -14,7 +14,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 > Step 2. Add the dependency
 ```gradle
     dependencies {
-	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.2'
+	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.4'
 	}
 ```
 ---
@@ -39,13 +39,13 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 **Kotlin**
 ```kotlin
     // Creating a dummy adview
-    val adView = AdView(this)
+    val adView = AdView(context)
     adView.adSize = AdSize.BANNER
     adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
     adView.loadAd(AdRequest.Builder().build())
     
     // Or using this code is the same code above it uses the test banner id provided by admob. 'ca-app-pub-3940256099942544/6300978111'
-    ConsentSDK.initDummyBanner(this)
+    ConsentSDK.initDummyBanner(context)
 ```
 ---
 # How to use library:
@@ -53,7 +53,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 
 **Java**
 ```java
-    ConsentSDK consentSDK = new ConsentSDK.Builder(this)
+    ConsentSDK consentSDK = new ConsentSDK.Builder(context)
                 .addTestDeviceId("your device id from logcat") // Add your test device id "Remove addTestDeviceId on production!"
                 .addCustomLogTag("CUSTOM_TAG") // Add custom tag default: ID_LOG
                 .addPrivacyPolicy("https://your.privacy.url/") // Add your privacy policy url
@@ -62,7 +62,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 ```
 **Kotlin**
 ```kotlin
-    val consentSDK = ConsentSDK.Builder(this)
+    val consentSDK = ConsentSDK.Builder(context)
                 .addTestDeviceId("your device id from logcat") // Add your test device id "Remove addTestDeviceId on production!"
                 .addCustomLogTag("CUSTOM_TAG") // Add custom tag default: ID_LOG
                 .addPrivacyPolicy("https://your.privacy.url/") // Add your privacy policy url
@@ -76,14 +76,14 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
     String deviceId = "your device id from logcat";
     String publisherId = "pub-0123456789012345";
     String privacyUrl = "https://your.privacy.url/";
-    ConsentSDK consentSDK = new ConsentSDK(this, publisherId, privacyUrl, true);
+    ConsentSDK consentSDK = new ConsentSDK(context, publisherId, privacyUrl, true);
 ```
 **Kotlin**
 ```kotlin
     val deviceId = "your device id from logcat"
     val publisherId = "pub-0123456789012345"
     val privacyUrl = "https://your.privacy.url/"
-    val consentSDK = ConsentSDK(this, publisherId, privacyUrl, true)
+    val consentSDK = ConsentSDK(context, publisherId, privacyUrl, true)
 ```
 > Choose one of the methods to initialize the ConsentSDK from above.
 
@@ -119,28 +119,28 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 **Java**
 ```java
     // To Load the banner
-    adView.loadAd(ConsentSDK.getAdRequest(this));
+    adView.loadAd(ConsentSDK.getAdRequest(context));
     // To Load Interstitial
-    interstitialAd.loadAd(ConsentSDK.getAdRequest(this));
+    interstitialAd.loadAd(ConsentSDK.getAdRequest(context));
 ```
 **Kotlin**
 ```kotlin
     // To Load the banner
-    adView.loadAd(ConsentSDK.getAdRequest(this))
+    adView.loadAd(ConsentSDK.getAdRequest(context))
     // To Load Interstitial
-    interstitialAd.loadAd(ConsentSDK.getAdRequest(this))
+    interstitialAd.loadAd(ConsentSDK.getAdRequest(context))
 ```
 `4. To Check if the user is within EEA or not.`
 
 **Java**
 ```java
-    // But you must call consent.checkConsent(callback) before to update the status
-    consentSDK.isUserLocationWithinEea(); // Returns true if within false if not.
+    // But you must be called after consent.checkConsent(callback) to update the status
+    ConsentSDK.isUserLocationWithinEea(context); // Returns true if within false if not.
 ```
 **Kotlin**
 ```kotlin
-    // But you must call consent.checkConsent(callback) before to update the status
-    consentSDK.isUserLocationWithinEea // Returns true if within false if not.
+    // But you must be called after consent.checkConsent(callback) to update the status
+    ConsentSDK.isUserLocationWithinEea(context) // Returns true if within false if not.
 ```
 `5. To request the consent form to re-edit it for the users within EEA.`
 

@@ -50,6 +50,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 ---
 # How to use library:
 `1.a Initializing using Builder class`
+
 **Java**
 ```java
     ConsentSDK consentSDK = new ConsentSDK.Builder(this)
@@ -69,6 +70,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
                 .build()
 ```
 `1.b Initializing without Builder class`
+
 **Java**
 ```java
     String deviceId = "your device id from logcat";
@@ -86,6 +88,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 > Choose one of the methods to initialize the ConsentSDK from above.
 
 `2. Then check the consent using:`
+
 **Java**
 ```java
     consentSDK.checkConsent(new ConsentSDK.ConsentSDKCallback() {
@@ -112,6 +115,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 ```
 
 `3. You should load the ads (banner or interstitial ..) using the function below:`
+
 **Java**
 ```java
     // To Load the banner
@@ -127,6 +131,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
     interstitialAd.loadAd(ConsentSDK.getAdRequest(this))
 ```
 `4. To Check if the user is within EEA or not.`
+
 **Java**
 ```java
     // But you must call consent.checkConsent(callback) before to update the status
@@ -138,6 +143,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
     consentSDK.isUserLocationWithinEea // Returns true if within false if not.
 ```
 `5. To request the consent form to re-edit it for the users within EEA.`
+
 **Java**
 ```java
     // To request the consent form to re-edit it for the users within EEA

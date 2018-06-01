@@ -134,12 +134,12 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 
 **Java**
 ```java
-    // But you must be called after consent.checkConsent(callback) to update the status
+    // But you must be called after consent.checkConsent(callback) because it will update the status of the user
     ConsentSDK.isUserLocationWithinEea(context); // Returns true if within false if not.
 ```
 **Kotlin**
 ```kotlin
-    // But you must be called after consent.checkConsent(callback) to update the status
+    // But you must be called after consent.checkConsent(callback) because it will update the status of the user
     ConsentSDK.isUserLocationWithinEea(context) // Returns true if within false if not.
 ```
 `5. To request the consent form to re-edit it for the users within EEA.`

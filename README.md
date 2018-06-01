@@ -14,7 +14,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 > Step 2. Add the dependency
 ```gradle
     dependencies {
-	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.2'
+	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.3'
 	}
 ```
 ---

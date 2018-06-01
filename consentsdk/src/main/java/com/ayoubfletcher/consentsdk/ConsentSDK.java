@@ -121,11 +121,16 @@ public class ConsentSDK {
     // Initialize debug
     public ConsentSDK(Context context, String publisherId, String privacyURL, boolean DEBUG) {
         this.context = context;
-        this.settings = context.getSharedPreferences(preferences_name, Context.MODE_PRIVATE);
+        this.settings = initPreferences(context);
         this.publisherId = publisherId;
         this.privacyURL = privacyURL;
         this.DEBUG = DEBUG;
         this.consentSDK = this;
+    }
+
+    // Initialize SharedPreferences
+    private static SharedPreferences initPreferences(Context context) {
+        return context.getSharedPreferences(preferences_name, Context.MODE_PRIVATE);
     }
 
     // Initialize production
@@ -218,8 +223,8 @@ public class ConsentSDK {
     }
 
     // Check the user location
-    public boolean isUserLocationWithinEea() {
-        return this.settings.getBoolean(user_status, false);
+    public static boolean isUserLocationWithinEea(Context context) {
+        return initPreferences(context).getBoolean(user_status, false);
     }
 
 

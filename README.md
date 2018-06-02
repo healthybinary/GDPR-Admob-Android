@@ -1,6 +1,9 @@
 # GDPR Android Admob Library
 Class helper to easily interact with google consent SDK easily made with LOVE :heart: :earth_africa:.
 
+# Example:
+Demo version app has been added for a better explanation of the library.
+
 # Required Dependencies:
 > Add it in your root build.gradle at the end of repositories:
 ```gradle
@@ -14,7 +17,7 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 > Step 2. Add the dependency
 ```gradle
     dependencies {
-	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.4'
+	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.5'
 	}
 ```
 ---
@@ -91,17 +94,17 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 
 **Java**
 ```java
-    consentSDK.checkConsent(new ConsentSDK.ConsentSDKCallback() {
+    consentSDK.checkConsent(new ConsentSDK.ConsentCallback() {
             @Override
-            public void onResult() {
+            public void onResult(boolean isRequestLocationInEeaOrUnknown) {
                 // Your code
             }
         });
 ```
 **Kotlin**
 ```kotlin
-    consentSDK.checkConsent(object : ConsentSDK.ConsentSDKCallback() {
-            override fun onResult() {
+    consentSDK.checkConsent(object : ConsentSDK.ConsentCallback() {
+            override fun onResult(isRequestLocationInEeaOrUnknown: Boolean) {
                 // Your code
             }
         })
@@ -147,18 +150,18 @@ Class helper to easily interact with google consent SDK easily made with LOVE :h
 **Java**
 ```java
     // To request the consent form to re-edit it for the users within EEA
-    consentSDK.requestConsent(new ConsentSDK.ConsentSDKCallback() {
-            @Override
-            public void onResult() {
-                // Your code after the consent is submitted if needed
-            }
-        });
+    consentSDK.requestConsent(new ConsentSDK.ConsentStatusCallback() {
+        @Override
+        public void onResult(boolean isRequestLocationInEeaOrUnknown, int isConsentPersonalized) {
+            // Your code after the consent is submitted if needed
+        }
+    });
 ```
 **Kotlin**
 ```kotlin
     // To request the consent form to re-edit it for the users within EEA
-    consentSDK.requestConsent(object : ConsentSDK.ConsentSDKCallback() {
-            override fun onResult() {
+    consentSDK.requestConsent(object : ConsentSDK.ConsentStatusCallback() {
+            override fun onResult(isRequestLocationInEeaOrUnknown: Boolean, isConsentPersonalized: Int) {
                 // Your code after the consent is submitted if needed
             }
         })

@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView messageTxt;
     private ConsentSDK consentSDK = null;
+    private Button showIntesttitlaBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,17 @@ public class MainActivity extends AppCompatActivity {
         // Initialize toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Initialize views
+        loadBanner();
+        showIntesttitlaBtn = findViewById(R.id.show_interstitial);
+        showIntesttitlaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadInterstitial();
+            }
+        });
+
 
         // Initialize Views
         messageTxt = findViewById(R.id.message);
@@ -63,6 +80,29 @@ public class MainActivity extends AppCompatActivity {
             messageTxt.setText(getString(R.string.user_not_within_eea_msg));
             ((LinearLayout) findViewById(R.id.message_container)).removeView(findViewById(R.id.consent_setting_btn));
         }
+    }
+
+    // Load banner ads
+    private void loadBanner() {
+        AdView adView = findViewById(R.id.adView);
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        adView.loadAd(ConsentSDK.getAdRequest(this));
+    }
+
+    // Load Interstitial
+    private void loadInterstitial() {
+        final InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        // You have to pass the AdRequest from ConsentSDK.getAdRequest(this) because it handle the right way to load the ad
+        interstitialAd.loadAd(ConsentSDK.getAdRequest(this));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Show interstitial
+                interstitialAd.show();
+                super.onAdLoaded();
+            }
+        });
     }
 
     // Initialize consent

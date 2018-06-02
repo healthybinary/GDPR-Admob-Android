@@ -23,8 +23,12 @@ import java.net.URL;
 
 public class ConsentSDK {
 
-    public abstract static class ConsentSDKCallback {
-        abstract public void onResult();
+    public abstract static class ConsentCallback {
+        abstract public void onResult(boolean isRequestLocationInEeaOrUnknown);
+    }
+
+    public abstract static class ConsentStatusCallback {
+        abstract public void onResult(boolean isRequestLocationInEeaOrUnknown, int isConsentPersonalized);
     }
 
     public abstract static class ConsentInformationCallback {
@@ -144,7 +148,7 @@ public class ConsentSDK {
 
     // Consent status
     public static boolean isConsentPersonalized(Context context) {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences settings = initPreferences(context);
         return settings.getBoolean(ads_preference, PERSONALIZED);
     }
 
@@ -227,49 +231,8 @@ public class ConsentSDK {
         return initPreferences(context).getBoolean(user_status, false);
     }
 
-
-    // Toggle View
-    public void consentToggleView(View view, boolean toggleView) {
-        toggleView(view, null, toggleView);
-    }
-
-    // Toggle View
-    public void consentToggleView(View view, ConsentSDKCallback callback, boolean toggleView) {
-        toggleView(view, callback, toggleView);
-    }
-
-    // Toggle View
-    private void toggleView(final View view, final ConsentSDKCallback callback, final boolean toggleView) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Request consent
-                consentSDK.requestConsent(callback);
-            }
-        });
-        // Hide Consent SDK
-        consentSDK.isRequestLocationIsEeaOrUnknown(new LocationIsEeaOrUnknownCallback() {
-            @Override
-            public void onResult(boolean isRequestLocationInEeaOrUnknown) {
-                // If toggle view turned on
-                if(toggleView) {
-                    if(isRequestLocationInEeaOrUnknown) {
-                        // Request consent
-                        view.setVisibility(View.VISIBLE);
-                        view.setClickable(true);
-                        view.setFocusable(true);
-                    } else {
-                        view.setVisibility(View.GONE);
-                        view.setClickable(false);
-                        view.setFocusable(false);
-                    }
-                }
-            }
-        });
-    }
-
     // Initialize Consent SDK
-    public void checkConsent(final ConsentSDKCallback callback) {
+    public void checkConsent(final ConsentCallback callback) {
         // Initialize consent information
         initConsentInformation(new ConsentInformationCallback() {
             @Override
@@ -284,22 +247,27 @@ public class ConsentSDK {
                         }
                         // Check the user status
                         if(consentInformation.isRequestLocationInEeaOrUnknown()) {
-                            requestConsent(callback);
+                            requestConsent(new ConsentStatusCallback() {
+                                @Override
+                                public void onResult(boolean isRequestLocationInEeaOrUnknown, int isConsentPersonalized) {
+                                    callback.onResult(isRequestLocationInEeaOrUnknown);
+                                }
+                            });
                         } else {
                             consentIsPersonalized();
                             // Callback
-                            callback.onResult();
+                            callback.onResult(consentInformation.isRequestLocationInEeaOrUnknown());
                         }
                         break;
                     case NON_PERSONALIZED:
                         consentIsNonPersonalized();
                         // Callback
-                        callback.onResult();
+                        callback.onResult(consentInformation.isRequestLocationInEeaOrUnknown());
                         break;
                     default:
                         consentIsPersonalized();
                         // Callback
-                        callback.onResult();
+                        callback.onResult(consentInformation.isRequestLocationInEeaOrUnknown());
                         break;
                 }
                 // Update user status
@@ -318,7 +286,7 @@ public class ConsentSDK {
     }
 
     // Request Consent
-    public void requestConsent(final ConsentSDKCallback callback) {
+    public void requestConsent(final ConsentStatusCallback callback) {
         URL privacyUrl = null;
         try {
             privacyUrl = new URL(privacyURL);
@@ -342,7 +310,12 @@ public class ConsentSDK {
                         }
                         // Callback on Error
                         if (callback != null) {
-                            callback.onResult();
+                            consentSDK.isRequestLocationIsEeaOrUnknown(new LocationIsEeaOrUnknownCallback() {
+                                @Override
+                                public void onResult(boolean isRequestLocationInEeaOrUnknown) {
+                                    callback.onResult(isRequestLocationInEeaOrUnknown, -1);
+                                }
+                            });
                         }
                     }
 
@@ -358,18 +331,26 @@ public class ConsentSDK {
                         if(DEBUG) {
                             Log.d(LOG_TAG, "Consent Form Closed!");
                         }
+                        final int isConsentPersonalized;
                         // Check the consent status and save it
                         switch (consentStatus) {
                             case NON_PERSONALIZED:
                                 consentIsNonPersonalized();
+                                isConsentPersonalized = 0;
                                 break;
                             default:
                                 consentIsPersonalized();
+                                isConsentPersonalized = 1;
                                 break;
                         }
                         // Callback
                         if(callback != null) {
-                            callback.onResult();
+                            consentSDK.isRequestLocationIsEeaOrUnknown(new LocationIsEeaOrUnknownCallback() {
+                                @Override
+                                public void onResult(boolean isRequestLocationInEeaOrUnknown) {
+                                    callback.onResult(isRequestLocationInEeaOrUnknown, isConsentPersonalized);
+                                }
+                            });
                         }
                     }
                 })

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ConsentSDK</string>
+    <string name="app_name">ConsentSDK Example</string>
+    <string name="user_within_eea_msg">You are within the EEA you can update your settings using the button bellow.\nYour consent is: </string>
+    <string name="user_not_within_eea_msg">You are not within the EEA nothing to do, just enjoy the app.</string>
 </resources>

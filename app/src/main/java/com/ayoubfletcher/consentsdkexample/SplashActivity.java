@@ -1,10 +1,12 @@
-package com.ayoubfletcher.consentsdk;
+package com.ayoubfletcher.consentsdkexample;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.ayoubfletcher.consentsdk.ConsentSDK;
 
 public class SplashActivity extends AppCompatActivity {
 

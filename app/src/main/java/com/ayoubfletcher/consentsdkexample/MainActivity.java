@@ -1,15 +1,15 @@
-package com.ayoubfletcher.consentsdk;
+package com.ayoubfletcher.consentsdkexample;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ayoubfletcher.consentsdk.ConsentSDK;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView messageTxt;
     private ConsentSDK consentSDK = null;
-    private Button showIntesttitlaBtn;
+    private Button showInterstitialBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize views
         loadBanner();
-        showIntesttitlaBtn = findViewById(R.id.show_interstitial);
-        showIntesttitlaBtn.setOnClickListener(new View.OnClickListener() {
+        showInterstitialBtn = findViewById(R.id.show_interstitial);
+        showInterstitialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadInterstitial();

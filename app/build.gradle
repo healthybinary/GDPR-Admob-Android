@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.ayoubfletcher.consentsdk"
+        applicationId "com.ayoubfletcher.consentsdkexample"
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 1

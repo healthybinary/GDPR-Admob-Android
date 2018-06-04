@@ -281,6 +281,8 @@ public class ConsentSDK {
                 }
                 // Update user status
                 updateUserStatus(consentInformation.isRequestLocationInEeaOrUnknown());
+                // Callback
+                callback.onResult(consentInformation.isRequestLocationInEeaOrUnknown());
             }
         });
     }

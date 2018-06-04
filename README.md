@@ -17,7 +17,7 @@ Demo version app has been added for a better explanation of the library.
 > Step 2. Add the dependency
 ```gradle
     dependencies {
-	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.5'
+	        implementation 'com.github.ayoubfletcher.GDPR-Admob-Android:consentsdk:0.1.6'
 	}
 ```
 ---
